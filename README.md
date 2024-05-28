@@ -64,3 +64,30 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Install After git clone
+- cd stomat_back
+- docker compose up -d
+- docker ps
+- docker exec -ti [id container of sail-8.3/app] /bin/sh
+- composer install
+- rm -rf vendor
+- su sail
+- composer install
+- exit 
+- exit
+- docker compose down -v
+- cp .env.example .env
+- vi .env
+-
+- DB_CONNECTION=mysql
+- DB_HOST=mysql
+- DB_PORT=3306
+- DB_DATABASE=laravel
+- DB_USERNAME=sail
+- DB_PASSWORD=password
+- 
+- sail up -d
+- sail artisan key:generate
+- sail artisan migrate
+- sail down -v
