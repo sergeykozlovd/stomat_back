@@ -24,8 +24,10 @@
                 <input name="price" id="price" class="form-control"/><br>
 
                 <div>Кртинка</div>
-                <input name="image" id="image" class="form-control" type="file"><br>
 
+                <input name="image" id="image" class="form-control" type="file" onchange="previewImage(event)"><br>
+                <img id="imagePreview"  alt="Image Preview" height="100" style="display: none;" />
+                <br>
 
                 <div>Категория</div>
                 <select class="form-control" id="category" name="category">
@@ -42,6 +44,24 @@
             </form>
         </div>
     </div>
+
+
+
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const reader = new FileReader();
+
+            reader.onload = function(){
+                const dataURL = reader.result;
+                const preview = document.getElementById('imagePreview');
+                preview.src = dataURL;
+                preview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    </script>
 @endsection
 
 
