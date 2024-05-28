@@ -1,0 +1,30 @@
+.advert-img {
+    height: 100px;
+    width: 200px;
+}
+
+.horizontal-layout {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+/* CSS for the inner vertical LinearLayout */
+.vertical-layout {
+    display: flex;
+    flex-direction: column;
+}
+/* Optional: Style for text */
+.text-view {
+    margin: 5px;
+    padding: 0px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.image-view {
+    width: 200px;
+    margin: 5px;
+    padding: 0px;
+    border: 1px solid black;
+    text-align: center;
+}
