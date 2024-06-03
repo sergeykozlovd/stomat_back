@@ -10,6 +10,7 @@ use App\Models\Purchase;
 use App\RouteName;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AdvertController extends Controller
 {
@@ -56,8 +57,16 @@ class AdvertController extends Controller
 
     public function delete(Request $request)
     {
-
         $selectedItems = $request->input('check', []);
+        $advertsInPurchase = Purchase::whereIn('advert_id', $selectedItems)->pluck('advert_id');
+        if ($advertsInPurchase->isNotEmpty()) {
+            $advertsTitle = Advert::whereIn('id',$advertsInPurchase)->pluck('title');
+            return redirect()->back()->with([
+                'not_deleted_adverts' => $advertsTitle,
+            ]);
+        }
+
+        return dd('ok');
         $purchasesForDelete = Purchase::whereIn('advert_id', $selectedItems)->get();
 
         foreach ($selectedItems as $itemId) {
