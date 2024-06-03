@@ -52,7 +52,9 @@ class AdvertController extends Controller
             ->leftJoin('purchases', 'adverts.id', '=', 'purchases.advert_id')
             ->select('adverts.*', 'purchases.state as purchases_state');
      //   return dd($query->get());
-        return view('adverts', ['adverts' => $query->get()]);
+        return view('adverts', [
+            'adverts' => $query->get()
+            ])->with(['alert'=>'ok']);
     }
 
     public function delete(Request $request)
@@ -61,9 +63,16 @@ class AdvertController extends Controller
         $advertsInPurchase = Purchase::whereIn('advert_id', $selectedItems)->pluck('advert_id');
         if ($advertsInPurchase->isNotEmpty()) {
             $advertsTitle = Advert::whereIn('id',$advertsInPurchase)->pluck('title');
-            return redirect()->back()->with([
-                'not_deleted_adverts' => $advertsTitle,
-            ]);
+            return redirect()->back()->with(
+                'alert2',[
+                    'success' => false,
+                    'title' => 'Attention',
+                    'text' => 'not deleted',
+                ]);
+
+//            return redirect()->back()->with([
+//                'not_deleted_adverts' => $advertsTitle,
+//            ]);
         }
 
         return dd('ok');
