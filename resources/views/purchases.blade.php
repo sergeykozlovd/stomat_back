@@ -7,7 +7,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <h4 class="fw-normal">Объявления</h4>
+                            <h4 class="fw-normal">Покупки</h4>
                         </div>
                         <div class="col-auto">
                             <button class="btn btn-outline-dark" type="submit">Удалить</button>

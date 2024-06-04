@@ -4,6 +4,7 @@ use App\Http\Controllers\AdvertController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AppConst;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PurchaseController;
 use App\RouteName;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/category/create', [CategoryController::class, 'create'])->name(RouteName::CATEGORY_CREATE);
     Route::post('/category/delete', [CategoryController::class, 'delete'])->name(RouteName::CATEGORY_DELETE);
     Route::post('/category/change', [CategoryController::class, 'change'])->name(RouteName::CATEGORY_CHANGE);
+
+
+    Route::get('/purchase/show', [PurchaseController::class, 'show'])->name(RouteName::PURCHASE_SHOW);
+//    Route::get('/purchase/show_add_form', [PurchaseController::class, 'showAddForm'])->name(RouteName::PURCHASE_SHOW_CREATE_FORM);
+//    Route::get('/purchase/show_edit_form', [PurchaseController::class, 'showEditForm'])->name(RouteName::PURCHASE_SHOW_EDIT_FORM);
+//    Route::post('/purchase/create', [PurchaseController::class, 'create'])->name(RouteName::PURCHASE_CREATE);
+//    Route::post('/purchase/delete', [PurchaseController::class, 'delete'])->name(RouteName::PURCHASE_DELETE);
+//    Route::post('/purchase/change', [PurchaseController::class, 'change'])->name(RouteName::PURCHASE_CHANGE);
 
 });
 

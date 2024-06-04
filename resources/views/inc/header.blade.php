@@ -13,7 +13,7 @@
                href="{{ route(\App\RouteName::ADVERT_SHOW) }}">Объявления</a>
 
             <a class="me-3 py-2 link-body-emphasis text-decoration-none"
-               href="{{ route(\App\RouteName::ADVERT_SHOW) }}">Объявления</a>
+               href="{{ route(\App\RouteName::PURCHASE_SHOW) }}">Покупки</a>
 
             <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/">Home</a>
             <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/users">Users</a>
