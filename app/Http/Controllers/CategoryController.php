@@ -131,4 +131,11 @@ class CategoryController extends Controller
 
         return $this->show();
     }
+
+    public function apiGetCategories(Request $request)
+    {
+        return response()->json([
+            'categories' => Category::where('parent_id', '=', $request->parent_id)->get()
+        ]);
+    }
 }

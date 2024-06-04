@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
 //    Route::get('/purchase/show_add_form', [PurchaseController::class, 'showAddForm'])->name(RouteName::PURCHASE_SHOW_CREATE_FORM);
 //    Route::get('/purchase/show_edit_form', [PurchaseController::class, 'showEditForm'])->name(RouteName::PURCHASE_SHOW_EDIT_FORM);
 //    Route::post('/purchase/create', [PurchaseController::class, 'create'])->name(RouteName::PURCHASE_CREATE);
-//    Route::post('/purchase/delete', [PurchaseController::class, 'delete'])->name(RouteName::PURCHASE_DELETE);
+    Route::post('/purchase/delete', [PurchaseController::class, 'delete'])->name(RouteName::PURCHASE_DELETE);
 //    Route::post('/purchase/change', [PurchaseController::class, 'change'])->name(RouteName::PURCHASE_CHANGE);
 
 });

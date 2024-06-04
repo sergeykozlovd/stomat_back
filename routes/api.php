@@ -1,29 +1,24 @@
 <?php
 
-use App\Http\Controllers\ApiAdvertController;
-use App\Http\Controllers\ApiAuthController;
-use App\Http\Controllers\ApiCategoryController;
-use App\Http\Controllers\ApiPurchaseController;
+use App\Http\Controllers\AdvertController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-//Route::get('/user', function (Request $request) {
-//    return $request->user();
-//})->middleware('auth:sanctum');
-
-Route::post('/login',[ApiAuthController::class,'login']);
-Route::post('/register',[ApiAuthController::class,'register']);
-Route::post('/recovery',[ApiAuthController::class,'recovery']);
-Route::post('/send_code',[ApiAuthController::class, 'sendRegisterCode']);
-Route::post('/send_recovery_code',[ApiAuthController::class,'sendRecoveryCode']);
-Route::get('/adverts',[ApiAdvertController::class,'getAll']);
-Route::get('/categories',[ApiCategoryController::class, 'getCategories']);
+Route::post('/login',[AuthController::class,'apiLogin']);
+Route::post('/register',[AuthController::class,'apiRegister']);
+Route::post('/recovery',[AuthController::class,'apiRecovery']);
+Route::post('/send_code',[AuthController::class, 'apiSendRegisterCode']);
+Route::post('/send_recovery_code',[AuthController::class,'apiSendRecoveryCode']);
+Route::get('/adverts',[AdvertController::class,'apiGetAll']);
+Route::get('/categories',[CategoryController::class, 'apiGetCategories']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', [UserController::class, 'user']);
-    Route::post('/logout', [ApiAuthController::class, 'logout']);
-    Route::post('/add_purchase_to_cart', [ApiPurchaseController::class, 'addPurchaseToCart']);
-    Route::get('/get_cart_purchases', [ApiPurchaseController::class, 'getPurchases']);
-    Route::post('/change_purchase_state', [ApiPurchaseController::class, 'changePurchaseState']);
+    Route::post('/logout', [AuthController::class, 'apiLogout']);
+    Route::post('/add_purchase_to_cart', [PurchaseController::class, 'apiAddPurchaseToCart']);
+    Route::get('/get_cart_purchases', [PurchaseController::class, 'apiGetPurchases']);
+    Route::post('/change_purchase_state', [PurchaseController::class, 'apiChangePurchaseState']);
 });
