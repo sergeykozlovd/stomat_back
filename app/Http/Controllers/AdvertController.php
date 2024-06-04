@@ -59,29 +59,30 @@ class AdvertController extends Controller
 
     public function delete(Request $request)
     {
+        $alertResult = true;
+        $alertTitle = 'Внимание!';
+        $alertText = 'Выбранные объявления успешно удалены';
         $selectedItems = $request->input('check', []);
+
         $advertsInPurchase = Purchase::whereIn('advert_id', $selectedItems)->pluck('advert_id');
+
         if ($advertsInPurchase->isNotEmpty()) {
+            $alertResult = false;
+            $alertText = 'Не удалось удалить объявления находящиеся в корзине пользователей!' ;
+
             $advertsTitle = Advert::whereIn('id',$advertsInPurchase)->pluck('title');
-            return redirect()->back()->with(
-                'alert2',[
-                    'success' => false,
-                    'title' => 'Attention',
-                    'text' => 'not deleted',
-                ]);
-
-//            return redirect()->back()->with([
-//                'not_deleted_adverts' => $advertsTitle,
-//            ]);
+            foreach ($advertsTitle as $title){
+                $alertText .= " $title" ;
+            }
+        } else {
+            Advert::whereIn('id', $selectedItems)->delete();
         }
-
-        return dd('ok');
-        $purchasesForDelete = Purchase::whereIn('advert_id', $selectedItems)->get();
-
-        foreach ($selectedItems as $itemId) {
-            Advert::find($itemId)->delete();
-        }
-        return redirect()->back()->with('success', 'Selected items deleted successfully.');
+        return redirect()->back()->with(
+            'alert',[
+            'success' => $alertResult,
+            'title' => $alertTitle,
+            'text' => $alertText,
+        ]);
     }
 
     public function showEditForm(Request $request)

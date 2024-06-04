@@ -47,9 +47,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var switchElement = document.getElementById('section');
-            var categorySection = document.getElementById('categorySection');
-            var imageSection = document.getElementById('imageSection');
+            const switchElement = document.getElementById('section');
+            const categorySection = document.getElementById('categorySection');
+            const imageSection = document.getElementById('imageSection');
 
             switchElement.addEventListener('change', function() {
                 if (switchElement.checked) {
