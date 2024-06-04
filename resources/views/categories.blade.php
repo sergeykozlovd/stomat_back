@@ -23,14 +23,10 @@
                 @foreach($categories as $category)
                     <div class="container my-1">
                         <div class="row">
-                            <div class="col-auto">
+                            <div class="col-auto" style="display:  @if($category->parent_id == null ) none @else block @endif">
                                 <input name="check[]" type="checkbox" value="{{$category->id}}">
                             </div>
-                            @if($category->parent_id != null )
-                                &nbsp;
-                                &nbsp;
-                                &nbsp;
-                            @endif
+
                             <div class="col-2">
                                 {{$category->name}}
                             </div>

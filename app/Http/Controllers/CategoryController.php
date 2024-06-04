@@ -6,7 +6,9 @@ use App\Constants;
 use App\Models\Advert;
 use App\Models\Pref;
 use App\Models\Category;
+use App\Models\Purchase;
 use App\RouteName;
+use Faker\Guesser\Name;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -68,17 +70,54 @@ class CategoryController extends Controller
 
     public function delete(Request $request)
     {
-        $selectedItems = $request->input('check', []);
-        foreach ($selectedItems as $itemId) {
-            Category::find($itemId)->delete();
+
+        $alertResult = true;
+        $alertTitle = 'Внимание!';
+        $alertText = 'Выбранные категории успешно удалены';
+        $categoriesForDelete = $request->input('check', []);
+
+        //TODO make delete section
+//        $sections = Category::whereIn('id', $categoriesForDelete)->where('parent_id', null)->pluck('id');
+//
+//        if ($sections->count() > 0){
+//            $categoryInSection = Category::whereIn('parent_id', $sections);
+//
+//            if ($categoryInSection->count() > 0){
+//                return dd('dele');
+////                return  redirect()->back()->with(
+////                    'alert',[
+////                    'success' => false ,
+////                    'title' => $alertTitle,
+////                    'text' => 'Выбранные разделы содержат категории!',
+////                ]);
+//            }
+//        }
+
+
+        $categoryInAdverts = Advert::whereIn('category_id', $categoriesForDelete)->pluck('category_id');
+
+        if ($categoryInAdverts->isNotEmpty()) {
+            $alertResult = false;
+            $alertText = 'Не удалось удалить категории принадлежащие объявлениям!' ;
+
+            $categoryNames = Category::whereIn('id',$categoryInAdverts)->pluck('name');
+            foreach ($categoryNames as $name){
+                $alertText .= " $name" ;
+            }
+        } else {
+            Category::whereIn('id', $categoriesForDelete)->delete();
         }
-        return redirect()->back()->with('success', 'Selected items deleted successfully.');
+        return redirect()->back()->with(
+            'alert',[
+            'success' => $alertResult,
+            'title' => $alertTitle,
+            'text' => $alertText,
+        ]);
     }
-
-
 
     public function change(Request $request)
     {
+        unset($this->fieldsForValidate['image']);
         $validatedData = $request->validate($this->fieldsForValidate);
 
         $category = Category::find($request['id']);
