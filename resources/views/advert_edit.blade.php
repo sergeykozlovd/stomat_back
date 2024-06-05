@@ -29,8 +29,8 @@
 
 
                 <dev>Кртинка</dev>
-                <input name="image" id="image"  class="form-control" type="file"><br>
-                <img src="/storage/{{$advert->image}} " alt="" height="100" width="200"/><br><br>
+                <input name="image" id="image"  class="form-control" type="file"  onchange="previewImage(event)"><br>
+                <img id= "imagePreview" src="/storage/{{$advert->image}} " alt="" height="100" width="200"/><br><br>
 
 
                 <dev>Категория</dev>
@@ -48,4 +48,20 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const dataURL = reader.result;
+                const preview = document.getElementById('imagePreview');
+                preview.src = dataURL;
+                // preview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    </script>
 @endsection

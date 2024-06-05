@@ -117,11 +117,15 @@ class CategoryController extends Controller
 
     public function change(Request $request)
     {
-        unset($this->fieldsForValidate['image']);
+//        unset($this->fieldsForValidate['image']);
         $validatedData = $request->validate($this->fieldsForValidate);
 
         $category = Category::find($request['id']);
         $category->name = $validatedData['name'];
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('', 'public');
+            $category->image = $imagePath;
+        }
 
         $category->save();
 

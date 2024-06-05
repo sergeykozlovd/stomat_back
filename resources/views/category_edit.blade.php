@@ -21,6 +21,10 @@
                 <div>Наименование</div>
                 <input name="name" id="name" class="form-control"
                        value="{{ $category->name }}"/><br>
+                @if ($category->parent_id == null)
+                    <input name="image" id="image" class="form-control" type="file" onchange="previewImage(event)"><br>
+                    <img  id="imagePreview" class="advert-img" src="/storage/{{$category->image}} " alt="" height="100"/>
+                @endif
 
 {{--                <div>Раздел</div>--}}
 {{--                <select class="form-control" id="section" name="section">--}}
@@ -37,4 +41,20 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const dataURL = reader.result;
+                const preview = document.getElementById('imagePreview');
+                preview.src = dataURL;
+                // preview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    </script>
 @endsection
