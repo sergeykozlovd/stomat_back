@@ -13,14 +13,38 @@ class PurchaseController extends Controller
 {
     public function show()
     {
-        $adverts = DB::table('adverts')
-            ->join('purchases','adverts.id', '=','purchases.advert_id')
-            ->select('adverts.*')
+        $purchases = DB::table('purchases')
+            ->join('adverts','adverts.id', '=','purchases.advert_id')
+            ->join('users','users.id', '=','purchases.user_id')
+            ->select('purchases.id','users.email','adverts.title','purchases.count','purchases.state')
             ->distinct()
             ->get();
+
         return view('purchases', [
-            'adverts' => $adverts
-        ])->with(['alert'=>'ok']);
+            'purchases' => $purchases
+        ]);
+    }
+
+    public function delete(Request $request)
+    {
+        $alertResult = true;
+        $alertTitle = 'Внимание!';
+        $alertText = 'Выбранные покупки успешно удалены';
+        $selectedItems = $request->input('check', []);
+        if (count($selectedItems) < 1) {
+            $alertResult = false;
+            $alertTitle = 'Внимание!';
+            $alertText = 'Покупки не выбраны!';
+        } else {
+            Purchase::whereIn('id', $selectedItems)->delete();
+        }
+
+        return redirect()->back()->with(
+            'alert',[
+            'success' => $alertResult,
+            'title' => $alertTitle,
+            'text' => $alertText,
+        ]);
     }
 
     public function apiAddPurchaseToCart(Request $request){

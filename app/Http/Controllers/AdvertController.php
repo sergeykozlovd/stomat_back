@@ -59,14 +59,17 @@ class AdvertController extends Controller
 
     public function delete(Request $request)
     {
+
         $alertResult = true;
         $alertTitle = 'Внимание!';
         $alertText = 'Выбранные объявления успешно удалены';
         $selectedItems = $request->input('check', []);
-
         $advertsInPurchase = Purchase::whereIn('advert_id', $selectedItems)->pluck('advert_id');
-
-        if ($advertsInPurchase->isNotEmpty()) {
+        if (count($selectedItems) < 1) {
+            $alertResult = false;
+            $alertTitle = 'Внимание!';
+            $alertText = 'Объявления не выбраны!';
+        } elseif  ($advertsInPurchase->isNotEmpty()) {
             $alertResult = false;
             $alertText = 'Не удалось удалить объявления находящиеся в корзине пользователей!' ;
 

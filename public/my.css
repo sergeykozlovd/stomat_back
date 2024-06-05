@@ -28,3 +28,16 @@
     border: 1px solid black;
     text-align: center;
 }
+
+table, th, td {
+    border: 1px solid black;
+    border-color: #eeeeee;
+}
+
+.ta-c {
+    text-align: center;
+}
+
+.ta-r {
+    text-align: right;
+}

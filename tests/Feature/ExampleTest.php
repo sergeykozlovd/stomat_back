@@ -5,6 +5,7 @@ namespace Tests\Feature;
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 //use Tests\TestCase;
 
+use App\Http\Controllers\AppConst;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -17,15 +18,9 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        $purchases = DB::table('purchases');
+        $a = AppConst::$purchaseStatus[0];
 
-        $adverts = DB::table('adverts')
-            ->join('purchases','adverts.id', '=','purchases.advert_id')
-            ->select('adverts.*')
-            ->distinct()
-            ->get();
-
-        dump($adverts);
+        dump($a);
 
         $this->assertTrue(true);
     }
