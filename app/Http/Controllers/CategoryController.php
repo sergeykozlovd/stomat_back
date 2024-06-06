@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
     public function showAddForm()
     {
-        return view('category_add',['categories' => Category::where('parent_id',null)->get()]);
+        return view('category_add', ['categories' => Category::where('parent_id', null)->get()]);
     }
 
     public function showEditForm(Request $request)
@@ -29,9 +29,10 @@ class CategoryController extends Controller
         $id = $request['id'];
         return view('category_edit', ['category' => Category::find($id)]);
     }
+
     public function create(Request $request)
     {
-        if (!$request->section){
+        if (!$request->section) {
             unset($this->fieldsForValidate['image']);
         }
         $validatedData = $request->validate($this->fieldsForValidate);
@@ -54,13 +55,13 @@ class CategoryController extends Controller
 
     public function show()
     {
-        $categories = Category::where('parent_id','=', null )->get();
+        $categories = Category::where('parent_id', '=', null)->get();
         $sorted = [];
 
-        foreach($categories as $category){
+        foreach ($categories as $category) {
             $sorted[] = $category;
-            $subcategories =Category::where('parent_id','=', $category->id )->get();
-            foreach($subcategories as $subcategory){
+            $subcategories = Category::where('parent_id', '=', $category->id)->get();
+            foreach ($subcategories as $subcategory) {
                 $sorted[] = $subcategory;
             }
         }
@@ -98,17 +99,17 @@ class CategoryController extends Controller
 
         if ($categoryInAdverts->isNotEmpty()) {
             $alertResult = false;
-            $alertText = 'Не удалось удалить категории принадлежащие объявлениям!' ;
+            $alertText = 'Не удалось удалить категории принадлежащие объявлениям!';
 
-            $categoryNames = Category::whereIn('id',$categoryInAdverts)->pluck('name');
-            foreach ($categoryNames as $name){
-                $alertText .= " $name" ;
+            $categoryNames = Category::whereIn('id', $categoryInAdverts)->pluck('name');
+            foreach ($categoryNames as $name) {
+                $alertText .= " $name";
             }
         } else {
             Category::whereIn('id', $categoriesForDelete)->delete();
         }
         return redirect()->back()->with(
-            'alert',[
+            'alert', [
             'success' => $alertResult,
             'title' => $alertTitle,
             'text' => $alertText,
@@ -117,10 +118,12 @@ class CategoryController extends Controller
 
     public function change(Request $request)
     {
-//        unset($this->fieldsForValidate['image']);
+        $category = Category::find($request['id']);
+        if ($category->parent_id) {
+            unset($this->fieldsForValidate['image']);
+        }
         $validatedData = $request->validate($this->fieldsForValidate);
 
-        $category = Category::find($request['id']);
         $category->name = $validatedData['name'];
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('', 'public');

@@ -150,9 +150,8 @@ class AdvertController extends Controller
         }
 
         if ($categoryId) {
-            $query
-                ->join('categories', 'categories.id', '=', 'adverts.category_id')
-                ->where('categories.parent_id', '=', $categoryId);
+            $query =  DB::table('adverts')
+                ->where('category_id',  $categoryId);
         }
         return response()->json([
             'adverts' => $query->get()
