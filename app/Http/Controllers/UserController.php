@@ -10,17 +10,19 @@ class UserController extends Controller
 {
 
     public function user(Request $request): JsonResponse {
-
-//        return response()->json([
-//            'message' => 'ok',
-//        ]);
         $user = $request->user();
-//        Log::info($user->currentAccessToken());
-//        $user->token = $user->currentAccessToken();
-
-        return response()->json(
-            $user
-        );
+        return response()->json([
+            'user' => $user
+        ]);
     }
 
+    public function change_user(Request $request): JsonResponse {
+       $user = $request->user();
+//        Log::info($request->all());
+        $user->fill($request->all());
+        $user->save();
+        return response()->json([
+            'user' => $user
+        ]);
+    }
 }

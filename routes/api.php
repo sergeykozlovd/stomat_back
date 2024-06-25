@@ -17,6 +17,7 @@ Route::get('/categories',[CategoryController::class, 'apiGetCategories']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', [UserController::class, 'user']);
+    Route::post('/change_user', [UserController::class, 'change_user']);
     Route::post('/logout', [AuthController::class, 'apiLogout']);
     Route::post('/add_purchase_to_cart', [PurchaseController::class, 'apiAddPurchaseToCart']);
     Route::get('/get_cart_purchases', [PurchaseController::class, 'apiGetPurchases']);
