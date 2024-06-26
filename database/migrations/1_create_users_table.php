@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('surname');
             $table->string('city');
-            $table->string('phone');
+            $table->string('phone')->length(11);
             $table->boolean('panel')->default(false);
             $table->rememberToken();
             $table->timestamps();

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -89,8 +90,16 @@ class AuthController extends Controller
         } else {
             $code = rand(1000, 9999);
             $password = $validated['password'];
+            $name = $request['name'];
+            $surname = $request['surname'];
+            $phone = $request['phone'];
+            $city = $request['city'];
             Cache::put('user:code:' . $email, $code);
             Cache::put('user:password:' . $email, $password);
+            Cache::put('user:name:' . $email, $name);
+            Cache::put('user:surname:' . $email, $surname);
+            Cache::put('user:phone:' . $email, $phone);
+            Cache::put('user:city:' . $email, $city);
             //Mail::to($email)->send(new MailMessage($code, $password)); TODO open for release
 
             return response()->json([
@@ -103,18 +112,30 @@ class AuthController extends Controller
     {
         $email = $request->input('email');
         $code = $request->input('code');
+//        $name = $request->input('name');
+//        $surname = $request->input('surname');
+//        $phone = $request->input('phone');
+//        $city = $request->input('city');
 
         $savedCode = Cache::get('user:code:' . $email);
         $savedPassword = Cache::get('user:password:' . $email);
+        $savedName = Cache::get('user:name:' . $email);
+        $savedSurname = Cache::get('user:surname:' . $email);
+        $savedPhone = Cache::get('user:phone:' . $email);
+        $savedCity = Cache::get('user:city:' . $email);
         if (!$savedCode) {
             return response()->json([
                 'message' => 'code not sent to this email',
             ])->setStatusCode(403);
         } elseif ($code == $savedCode) {
-
+            Log::info($savedSurname);
             $user = User::query()->create([
                 'email' => $email,
                 'password' => $savedPassword,
+                'name' => $savedName,
+                'surname' => $savedSurname,
+                'phone' => $savedPhone,
+                'city' => $savedCity,
             ]);
 
             $token = $user->createToken($email . ':register')->plainTextToken;
@@ -122,6 +143,10 @@ class AuthController extends Controller
                 'token' => $token,
                 'email' => $email,
                 'password' => $savedPassword,
+                'name' => $savedName,
+                'surname' => $savedSurname,
+                'phone' => $savedPhone,
+                'city' => $savedCity,
             ]);
         } else {
             return response()->json([
